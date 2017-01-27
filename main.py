@@ -15,11 +15,68 @@
 # limitations under the License.
 #
 import webapp2
+import cgi
+page_header="""
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+    User Signup.
+    </title>
+</head>
+<body>
+    <h1>
+    User signup!
+    </h1>
+
+"""
+page_footer="""
+</body>
+</html>
+"""
+def build_page(page_content):
+    user_form= """
+        <form action="/signup" method="post">
+            <label for="username">
+                Username: <input name="username" type="text" value required/>
+            </label><br>
+            <label for="password">
+                Password: <input name="password" type="password" value required/>
+            </label><br>
+            <label for="verify">
+                Verify Password: <input name="verify" type="password" value required/>
+            </label><br>
+            <label for="email">
+                Email (optional): <input name="email" type="email" value/>
+            </label>
+
+    """
+    content=page_header+user_form+page_footer
+    return (content)
+def username_check(user_name):
+    username=str(user_name)
+    if username=="":
+        error="You didn't enter a username."
+        error_escaped=cgi.escape(error,quote=True)
+        self.redirect("/?error=" + error_escaped)
+    for a in username
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        content=build_page("")
+        self.response.write(content)
+
+class SignUp(webapp2.RequestHandler):
+    def post(self):
+        new_user=self.response.get('username')
+        new_password=self.response.get('password')
+        new_verify=self.response.get('verify')
+        new_email=self.response.get('email')
+
+
+
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/signup',SignUp)
 ], debug=True)
